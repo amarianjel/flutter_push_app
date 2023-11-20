@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:push_app/config/router/app_router.dart';
 import 'package:push_app/config/theme/app_theme.dart';
 
+
 void main() {
+  // MultiBlocProvider(
+  //   providers: [
+  //     BlocProvider(create: (_) => NotificationsBloc())
+  //   ], 
+  //   child: const MainApp()
+  // );
+
   runApp(const MainApp());
 }
 
