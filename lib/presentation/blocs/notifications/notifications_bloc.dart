@@ -17,6 +17,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     // on<NotificationsEvent>((event, emit) {
     //   // TODO: implement event handler
     // });
+    _initialStatusCheck();  //+ Metodo para saber el estado de autoriZACION
   }
 
   static Future<void> initializeFCM () async {
@@ -31,6 +32,21 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         status: event.status
       )
     );
+
+    _getFCMToken();
+  }
+
+  void _initialStatusCheck() async {
+    final settings = await messaging.getNotificationSettings();
+    add( NotificationStatusChanged(settings.authorizationStatus) );
+  }
+
+    void _getFCMToken() async {
+    
+    if ( state.status != AuthorizationStatus.authorized ) return;
+  
+    final token = await messaging.getToken();
+    print("TOKEN $token");
   }
 
   void requestPermission() async {
