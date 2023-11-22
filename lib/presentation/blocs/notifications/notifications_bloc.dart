@@ -25,7 +25,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc() : super( const NotificationsState() ) {
 
     on<NotificationStatusChanged>( _notificationStatusChanged );
-
+    // TODO 3: Crear el listener
+    on<NotificationReceived>(_onPushMessageReceived); 
 
     // Verificar estado de las notificaciones
     _initialStatusCheck();
@@ -50,6 +51,15 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _getFCMToken();
   }
 
+  // TODO 4: Crear el heandler
+  void _onPushMessageReceived( NotificationReceived event, Emitter<NotificationsState> emit){
+    emit(
+      state.copyWith(
+        notifications: [ event.pushMessage, ...state.notifications ]
+      )
+    );
+  }
+
   void _initialStatusCheck() async {
     final settings = await messaging.getNotificationSettings();
     add( NotificationStatusChanged(settings.authorizationStatus) );
@@ -60,7 +70,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     if ( state.status != AuthorizationStatus.authorized ) return;
   
     final token = await messaging.getToken();
-    print("TOKEN $token");
+    print("TOKEN === $token");
   }
 
   void handleRemoteMessage( RemoteMessage message ) {
@@ -78,8 +88,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         ? message.notification!.android?.imageUrl
         : message.notification!.apple?.imageUrl
     );
-
-    print(notification);
+    // TODO 1: Añadir un nuevo evento
+    add(NotificationReceived(notification));
   }
 
   void _onForegroundMessage(){ 
