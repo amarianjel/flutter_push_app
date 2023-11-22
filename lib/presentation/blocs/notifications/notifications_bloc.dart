@@ -89,7 +89,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         : message.notification!.apple?.imageUrl
     );
     // TODO 1: Añadir un nuevo evento
-    add(NotificationReceived(notification));
+    add( NotificationReceived(notification) );
   }
 
   void _onForegroundMessage(){ 
